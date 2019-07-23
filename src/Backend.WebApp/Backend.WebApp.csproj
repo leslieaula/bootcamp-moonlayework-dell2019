@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <Authors>Dmitry Sikorsky</Authors>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190723064405_CompletedEntityRelation.cs" />
+    <Compile Remove="Migrations\20190723064405_CompletedEntityRelation.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="ExtCore.Data" Version="4.0.0" />
+    <PackageReference Include="ExtCore.Mvc" Version="4.0.0" />
+    <PackageReference Include="ExtCore.WebApplication" Version="4.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Barebone\Barebone.csproj" />
+    <ProjectReference Include="..\Employees.Data.EntityFramework.SqlServer\Employees.Data.EntityFramework.SqlServer.csproj" />
+    <ProjectReference Include="..\Employees\Employees.csproj" />
+  </ItemGroup>
+
+</Project>
