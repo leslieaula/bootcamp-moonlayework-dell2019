@@ -3,6 +3,7 @@ using Data.Entities;
 using Employees.Data.Abstractions;
 using Employees.Data.Entities;
 using Employees.ViewModels.Employee;
+using Employees.ViewModels.EmployeeRole;
 using ExtCore.Data.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +12,18 @@ using System.Linq;
 
 namespace Employees.Controllers.Api
 {
-   // [Authorize]
-    [Route("api/employees")]
-    public class EmployeesController : ControllerBaseApi
+    //[Authorize]
+    [Route("api/roles")]
+    public class EmployeeRoleController : ControllerBaseApi
     {
-        public EmployeesController(IStorage storage) : base(storage)
+        public EmployeeRoleController(IStorage storage) : base(storage)
         {
         }
 
         [HttpGet]
         public IActionResult Get(int page = 0, int size = 25)
         {
-            IEnumerable<Employee> data = new EmployeeModelFactory().LoadAll(this.Storage, page, size)?.Employees;
+            IEnumerable<EmployeeRole> data = new EmployeeRoleModelFactory().LoadAll(this.Storage, page, size)?.Roles;
             int count = data.Count();
 
             return Ok(new
@@ -35,14 +36,14 @@ namespace Employees.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult Post(EmployeeCreateViewModel model)
+        public IActionResult Post(EmployeeRoleCreateViewModel model)
         {
             if (this.ModelState.IsValid)
             {
-                Employee employee = model.ToEntity();
-                var repo = this.Storage.GetRepository<IEmployeeRepository>();
+                EmployeeRole role = model.ToRoleEntity();
+                var repo = this.Storage.GetRepository<IEmployeeRoleRepository>();
 
-                repo.Create(employee, GetCurrentUserName());
+                repo.Create(role, GetCurrentUserName());
                 this.Storage.Save();
 
                 return Ok(new { success = true });
@@ -54,28 +55,28 @@ namespace Employees.Controllers.Api
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            var repo = this.Storage.GetRepository<IEmployeeRepository>();
+            var repo = this.Storage.GetRepository<IEmployeeRoleRepository>();
 
-            Employee employee = repo.WithKey(id);
-            if (employee == null)
+            EmployeeRole role = repo.WithKey(id);
+            if (role == null)
                 return this.NotFound(new { success = false });
 
-            return Ok(new { success = true, data = employee });
+            return Ok(new { success = true, data = role });
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, EmployeeUpdateViewModel model)
+        public IActionResult Put(int id, EmployeeRoleUpdateViewModel model)
         {
-            var repo = this.Storage.GetRepository<IEmployeeRepository>();
+            var repo = this.Storage.GetRepository<IEmployeeRoleRepository>();
 
-            Employee employee = repo.WithKey(id);
-            if (employee == null)
+            EmployeeRole role = repo.WithKey(id);
+            if (role == null)
                 return this.NotFound(new { success = false });
 
             if (this.ModelState.IsValid)
             {
-                model.ToEntity(employee);
-                repo.Edit(employee, GetCurrentUserName());
+                model.ToRoleEntity(role);
+                repo.Edit(role, GetCurrentUserName());
                 this.Storage.Save();
 
                 return Ok(new { success = true });
@@ -87,13 +88,13 @@ namespace Employees.Controllers.Api
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            var repo = this.Storage.GetRepository<IEmployeeRepository>();
+            var repo = this.Storage.GetRepository<IEmployeeRoleRepository>();
 
-            Employee employee = repo.WithKey(id);
-            if (employee == null)
+            EmployeeRole role = repo.WithKey(id);
+            if (role == null)
                 return this.NotFound(new { success = false });
 
-            repo.Delete(employee, GetCurrentUserName());
+            repo.Delete(role, GetCurrentUserName());
             this.Storage.Save();
 
             return Ok(new { success = true });

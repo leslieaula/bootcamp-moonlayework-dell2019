@@ -21,13 +21,13 @@ namespace Employees.Controllers
 
         public ActionResult Create()
         {
-            var model = new CreateViewModel();
+            var model = new EmployeeCreateViewModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Create(CreateViewModel model)
+        public ActionResult Create(EmployeeCreateViewModel model)
         {
             if (this.ModelState.IsValid)
             {
